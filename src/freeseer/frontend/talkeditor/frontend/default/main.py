@@ -185,7 +185,7 @@ class MainApp(QtGui.QMainWindow):
                                     "",         # description
                                     "",         # level
                                     str(self.ui.eventEdit.text()),
-                                    str(self.ui.dateTimeEdit),
+                                    str(self.ui.dateTimeEdit.text()),
                                     str(self.ui.roomEdit.text()))
                 
         # Do not add talks if they are empty strings
@@ -229,7 +229,7 @@ class MainApp(QtGui.QMainWindow):
 
     def reset(self):
         self.core.clear_database()
-        self.update_talk_views
+        self.update_talk_views()
 
     def load_talks(self):
         talklist = self.core.get_talk_titles()
