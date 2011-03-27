@@ -3,7 +3,7 @@
 
 # freeseer - vga/presentation capture software
 #
-#  Copyright (C) 2010  Free and Open Source Software Learning Centre
+#  Copyright (C) 2011  Free and Open Source Software Learning Centre
 #  http://fosslc.org
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ from freeseer.framework.core import *
 from freeseer.framework.qt_area_selector import *
 from freeseer.framework.qt_key_grabber import *
 from freeseer.framework.presentation import *
+from freeseer.frontend.talkeditor.frontend.default.main import *
 
 from freeseer_ui_qt import *
 from freeseer_about import *
@@ -111,9 +112,9 @@ class MainApp(QtGui.QMainWindow):
         self.ui = Ui_FreeseerMainWindow()
         self.ui.setupUi(self)
         self.ui.hardwareBox.hide()
+        self.talkEditor = TalkEditorMainApp()
         self.statusBar().showMessage('ready')
         self.aboutDialog = AboutDialog()    
-        self.ui.editTable.setColumnHidden(3,True)
         self.default_language = 'en';
         self.talks_to_save = []
         self.talks_to_delete = []
@@ -193,23 +194,15 @@ class MainApp(QtGui.QMainWindow):
         # connections for configure > Extra Settings > File Locations
         self.connect(self.ui.videoDirectoryButton, QtCore.SIGNAL('clicked()'), self.browse_video_directory)
 
-        # edit talks tab connections
-        self.connect(self.ui.confirmAddTalkButton, QtCore.SIGNAL('clicked()'), self.add_talk)
-        self.connect(self.ui.rssButton, QtCore.SIGNAL('clicked()'), self.add_talks_from_rss)
-        self.connect(self.ui.removeTalkButton, QtCore.SIGNAL('clicked()'), self.remove_talk)
-        self.connect(self.ui.resetButton, QtCore.SIGNAL('clicked()'), self.reset)
-        self.ui.addTalkGroupBox.setHidden(True)
-        
         # extra tab connections
         self.connect(self.ui.autoHideCheckbox, QtCore.SIGNAL('toggled(bool)'), self.toggle_auto_hide)
 
         # Main Window Connections
         self.connect(self.ui.actionExit, QtCore.SIGNAL('triggered()'), self.close)
         self.connect(self.ui.actionAbout, QtCore.SIGNAL('triggered()'), self.aboutDialog.show)
-        
-        # editTable Connections
-        self.connect(self.ui.editTable, QtCore.SIGNAL('cellChanged(int, int)'), self.edit_talk)
 
+        self.connect(self.ui.actionEdit_talks, QtCore.SIGNAL('triggered()'), self.talkEditor.show)
+        
         # setup video preview widget
         self.core.preview(True, self.ui.previewWidget.winId())
 
@@ -476,66 +469,6 @@ class MainApp(QtGui.QMainWindow):
         else:
             self.core.test_sources(state, True, False)
 
-    def add_talk(self):
-        presentation = Presentation(self._unicode_to_string(unicode(self.ui.titleEdit.text())),
-                                    self._unicode_to_string(unicode(self.ui.presenterEdit.text())),
-                                    "",         # description
-                                    "",         # level
-                                    self._unicode_to_string(unicode(self.ui.eventEdit.text())),
-                                    self._unicode_to_string(unicode(self.ui.dateTimeEdit.text())),
-                                    self._unicode_to_string(unicode(self.ui.roomEdit.text())))
-                
-        # Do not add talks if they are empty strings
-        if (len(presentation.title) == 0): return
-        
-        self.core.add_talk(presentation)
-
-        # cleanup
-        self.ui.titleEdit.clear()
-        self.ui.presenterEdit.clear()
-        self.ui.eventEdit.clear()
-        self.ui.dateTimeEdit.clear()
-        self.ui.roomEdit.clear()
-        
-        self.update_talk_views()
-
-    def remove_talk(self): 
-        try:
-            row_clicked = self.ui.editTable.currentRow()
-        except:            
-            return
-        
-        id = self.ui.editTable.item(row_clicked, 3).text() 
-        self.core.delete_talk(str(id))
-        self.ui.editTable.removeRow(row_clicked)
-
-        self.update_talk_views()
-
-    # This method currently causing performance issues.
-    def edit_talk(self, row, col):
-        try:
-            speaker = self.ui.editTable.item(row, 0).text()
-            title = self.ui.editTable.item(row, 1).text()
-            room = self.ui.editTable.item(row, 2).text()
-            talk_id = self.ui.editTable.item(row, 3).text()
-        except:
-            return
-
-        self.core.update_talk(talk_id, speaker, title, room)
-
-        # Update the main tab
-        self.load_events()
-        self.load_rooms()
-        
-        event = str(self.ui.eventList.currentText())
-        room = str(self.ui.roomList.currentText())
-        talk_list = self.core.filter_talks_by_event_room(event, room)
-        self.update_talk_list(talk_list)
-   
-    def reset(self):
-        self.core.clear_database()
-        self.update_talk_views()
-
     def get_rooms_and_talks_at_event(self, event):        
         room_list = self.core.filter_rooms_by_event(self.ui.eventList.currentText())        
         self.update_room_list(room_list)
@@ -575,18 +508,6 @@ class MainApp(QtGui.QMainWindow):
 
         # Update the Edit Talks Table
         talklist = self.core.get_talk_titles()
-        
-        self.ui.editTable.clearContents()
-        self.ui.editTable.setRowCount(0)    
-       
-        for talk in talklist:          
-            index = self.ui.editTable.rowCount()
-            self.ui.editTable.insertRow(index)
-            
-            for i in range(len(talk)):                
-                self.ui.editTable.setItem(index,i,QtGui.QTableWidgetItem(unicode(talk[i])))                         
-        
-        self.ui.editTable.resizeRowsToContents()
             
     def load_events(self):
         '''
@@ -612,23 +533,6 @@ class MainApp(QtGui.QMainWindow):
             if len(room)>0:
                 self.ui.roomList.addItem(room)
 
-    def add_talks_from_rss(self):
-        rss_url = str(self.ui.rssEdit.text())
-        self.core.add_talks_from_rss(rss_url)
-        self.update_talk_views()
-
-    def update_talk_views(self):
-        # disconnect the editTable signal before we refresh the views
-        self.disconnect(self.ui.editTable, QtCore.SIGNAL('cellChanged(int, int)'), self.edit_talk)
-
-        # finish up
-        self.load_events()
-        self.load_rooms()
-        self.load_talks()
-
-        # lets not forget to reactivate the editTable signal
-        self.connect(self.ui.editTable, QtCore.SIGNAL('cellChanged(int, int)'), self.edit_talk)
-        
     def toggle_auto_hide(self):
         '''
         This function disables the preview when auto-hide box is checked.
