@@ -33,6 +33,6 @@ resource_rc.py: forms/resource.qrc
 	pyrcc4 forms/resource.qrc -o resource_rc.py
 
 clean: 
-	rm -f resource_rc.py talkeditor_about.py talkeditor_ui_qt.py *.pyc*~
+	rm -f resource_rc.py talkeditor_about.py talkeditor_ui_qt.py *.pyc
 
 

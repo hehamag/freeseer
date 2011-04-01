@@ -226,6 +226,7 @@ class TalkEditorMainApp(QtGui.QMainWindow):
             return
 
         self.core.update_talk(talk_id, speaker, title, room, event, dateTime)
+        self.emit(QtCore.SIGNAL('changed'))
 
     def reset(self):
         self.core.clear_database()
@@ -260,6 +261,9 @@ class TalkEditorMainApp(QtGui.QMainWindow):
 
         # lets not forget to reactivate the editTable signal
         self.connect(self.ui.editTable, QtCore.SIGNAL('cellChanged(int, int)'), self.edit_talk)
+
+        # send the changed signal to Freeseer
+        self.emit(QtCore.SIGNAL('changed'))
         
     def showMainWin(self):
         if self.isHidden():

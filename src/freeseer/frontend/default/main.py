@@ -63,7 +63,7 @@ class AboutDialog(QtGui.QDialog):
 	 Translates the about dialog. Calls the retranslateUi function of the about dialog itself
         '''
 	DESCRIPTION = self.tr('AboutDialog','Freeseer is a video capture utility capable of capturing presentations. It captures video sources such as usb, firewire, or local desktop along with audio and mixes them together to produce a video.')
-	COPYRIGHT=self.tr('Copyright (C) 2010 The Free and Open Source Software Learning Centre')
+	COPYRIGHT=self.tr('Copyright (C) 2011 The Free and Open Source Software Learning Centre')
 	LICENSE_TEXT=self.tr("Freeseer is licensed under the GPL version 3. This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.")
 	
 	ABOUT_INFO = u'<h1>'+NAME+u'</h1>' + \
@@ -201,7 +201,7 @@ class MainApp(QtGui.QMainWindow):
         self.connect(self.ui.actionExit, QtCore.SIGNAL('triggered()'), self.close)
         self.connect(self.ui.actionAbout, QtCore.SIGNAL('triggered()'), self.aboutDialog.show)
 
-        self.connect(self.ui.actionEdit_talks, QtCore.SIGNAL('triggered()'), self.talkEditor.show)
+        self.connect(self.ui.actionEdit_talks, QtCore.SIGNAL('triggered()'), self.run_talk_editor)
         
         # setup video preview widget
         self.core.preview(True, self.ui.previewWidget.winId())
@@ -533,6 +533,14 @@ class MainApp(QtGui.QMainWindow):
             if len(room)>0:
                 self.ui.roomList.addItem(room)
 
+    def update_talk_views(self):
+      '''
+      This function reloads the lists of events, rooms and talks.
+      '''
+      self.load_events()
+      self.load_rooms()
+      self.load_talks()
+
     def toggle_auto_hide(self):
         '''
         This function disables the preview when auto-hide box is checked.
@@ -612,6 +620,10 @@ class MainApp(QtGui.QMainWindow):
         self.core.logger.log.info('Exiting freeseer...')
         #self.core.stop()
         event.accept()
+
+    def run_talk_editor(self):
+      self.connect(self.talkEditor, QtCore.SIGNAL('changed'), self.update_talk_views)
+      self.talkEditor.show()
     
     def translateAction(self ,action):
      '''
