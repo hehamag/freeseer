@@ -96,8 +96,8 @@
     </message>
     <message>
         <location filename="../freeseer/frontend/default/forms/freeseer_ui_qt.ui" line="717"/>
-        <source>Tools</source>
-        <translation>Outils</translation>
+        <source>Edit</source>
+        <translation>Éditer</translation>
     </message>
     <message>
         <location filename="../freeseer/frontend/default/forms/freeseer_ui_qt.ui" line="448"/>

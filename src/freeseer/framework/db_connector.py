@@ -3,7 +3,7 @@
 
 # freeseer - vga/presentation capture software
 #
-#  Copyright (C) 2010  Free and Open Source Software Learning Centre
+#  Copyright (C) 2011  Free and Open Source Software Learning Centre
 #  http://fosslc.org
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -90,14 +90,16 @@ class DB_Connector():
         talk_titles = []
         
         self.cursor = self.db_connection.cursor()
-        self.cursor.execute('''SELECT Speaker, Title, Room, Id FROM presentations''')
+        self.cursor.execute('''SELECT Speaker, Title, Room, Event, Time, Id FROM presentations''')
 
         for row in self.cursor:
             speaker = row[0]
             title = row[1]
             room = row[2]
-            talk_id = row[3]
-            talk_titles.append([speaker, title, room, talk_id])
+            event = row[3]
+            time = row[4]
+            talk_id = row[5]
+            talk_titles.append([speaker, title, room, event, time, talk_id])
             
         self.cursor.close()
             
@@ -283,6 +285,7 @@ class DB_Connector():
         self.db_connection.commit()
         self.cursor.close()
         
+<<<<<<< HEAD
     def update_talk(self, talk_id, new_speaker, new_title, new_room):        
         
         self.cursor = self.db_connection.cursor()
@@ -291,6 +294,16 @@ class DB_Connector():
                              unicode(new_title),
                              unicode(new_room),
                              unicode(talk_id)])
+=======
+    def update_talk(self, talk_id, new_speaker, new_title, new_room, new_event, new_time):        
+        self.cursor.execute('''UPDATE presentations SET Speaker=?, Title=?, Room=?, Event=?, Time=?  WHERE Id=?''',
+                            [str(new_speaker),
+                             str(new_title),
+                             str(new_room),
+                             str(new_event),
+                             str(new_time),
+                             str(talk_id)])
+>>>>>>> This commit includes the followings:
         self.db_connection.commit()
         self.cursor.close()
         

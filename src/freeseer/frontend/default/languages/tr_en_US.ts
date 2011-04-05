@@ -321,7 +321,7 @@ v4l2src does not work.</source>
     </message>
     <message>
         <location filename="../freeseer/frontend/default/forms/freeseer_ui_qt.ui" line="717"/>
-        <source>Tools</source>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

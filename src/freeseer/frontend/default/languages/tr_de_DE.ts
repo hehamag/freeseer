@@ -331,8 +331,8 @@ funktioniert nicht.</translation>
     </message>
     <message>
         <location filename="../freeseer/frontend/default/forms/freeseer_ui_qt.ui" line="717"/>
-        <source>Tools</source>
-        <translation>Werkzeuge</translation>
+        <source>Edit</source>
+        <translation>Edieren</translation>
     </message>
     <message>
         <location filename="../freeseer/frontend/default/forms/freeseer_ui_qt.ui" line="728"/>

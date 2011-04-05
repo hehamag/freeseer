@@ -469,8 +469,8 @@ v4l2src does not work.</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>609</width>
-             <height>387</height>
+             <width>251</width>
+             <height>50</height>
             </rect>
            </property>
            <attribute name="label">
@@ -522,8 +522,8 @@ v4l2src does not work.</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>609</width>
-             <height>387</height>
+             <width>188</width>
+             <height>190</height>
             </rect>
            </property>
            <attribute name="label">
@@ -712,15 +712,15 @@ v4l2src does not work.</string>
     </widget>
     <addaction name="menuLanguage"/>
    </widget>
-   <widget class="QMenu" name="menuTools">
+   <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Tools</string>
+     <string>Edit</string>
     </property>
     <addaction name="actionEdit_talks"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
-   <addaction name="menuTools"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionExit">

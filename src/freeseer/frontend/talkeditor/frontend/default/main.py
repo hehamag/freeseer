@@ -25,7 +25,7 @@
 from PyQt4 import QtGui, QtCore
 from os import listdir;
 from freeseer.framework.presentation import *
-from freeseer.frontend.talkeditor.framework.core import *
+from freeseer.framework.core import *
 
 from talkeditor_ui_qt import *
 from talkeditor_about import *
@@ -104,7 +104,7 @@ class TalkEditorMainApp(QtGui.QMainWindow):
         self.ui.editTable.setColumnHidden(5,True)
         self.default_language = 'en';
 
-        self.core = TalkEditorCore(self)
+        self.core = FreeseerCore(self)
         
         #Setup the translator and populate the language menu under options
 	self.uiTranslator = QtCore.QTranslator();
@@ -199,6 +199,10 @@ class TalkEditorMainApp(QtGui.QMainWindow):
         self.ui.eventEdit.clear()
         self.ui.dateTimeEdit.clear()
         self.ui.roomEdit.clear()
+        self.ui.checkBox.setChecked(False)
+        self.ui.checkBox_2.setChecked(False)
+        self.ui.checkBox_3.setChecked(False)
+        self.ui.checkBox_4.setChecked(False)
 
         self.update_talk_views()
 

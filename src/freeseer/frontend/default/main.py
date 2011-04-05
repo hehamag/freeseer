@@ -112,7 +112,6 @@ class MainApp(QtGui.QMainWindow):
         self.ui = Ui_FreeseerMainWindow()
         self.ui.setupUi(self)
         self.ui.hardwareBox.hide()
-        self.talkEditor = TalkEditorMainApp()
         self.statusBar().showMessage('ready')
         self.aboutDialog = AboutDialog()    
         self.default_language = 'en';
@@ -217,6 +216,8 @@ class MainApp(QtGui.QMainWindow):
         # setup spacebar key
         self.ui.recordButton.setShortcut(QtCore.Qt.Key_Space)
         self.ui.recordButton.setFocus()
+
+        self.talkEditor = TalkEditorMainApp()
 	
     def setupLanguageMenu(self):
 	#Add Languages to the Menu Ensure only one is clicked 
