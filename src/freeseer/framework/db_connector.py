@@ -285,25 +285,17 @@ class DB_Connector():
         self.db_connection.commit()
         self.cursor.close()
         
-<<<<<<< HEAD
-    def update_talk(self, talk_id, new_speaker, new_title, new_room):        
-        
+    def update_talk(self, talk_id, new_speaker, new_title, new_room, new_event, new_time):        
+
         self.cursor = self.db_connection.cursor()
-        self.cursor.execute('''UPDATE presentations SET Speaker=?, Title=?, Room=? WHERE Id=?''',
+        self.cursor.execute('''UPDATE presentations SET Speaker=?, Title=?, Room=?, Event=?, Time=?  WHERE Id=?''',
                             [unicode(new_speaker),
                              unicode(new_title),
                              unicode(new_room),
+                             unicode(new_event),
+                             unicode(new_time),
                              unicode(talk_id)])
-=======
-    def update_talk(self, talk_id, new_speaker, new_title, new_room, new_event, new_time):        
-        self.cursor.execute('''UPDATE presentations SET Speaker=?, Title=?, Room=?, Event=?, Time=?  WHERE Id=?''',
-                            [str(new_speaker),
-                             str(new_title),
-                             str(new_room),
-                             str(new_event),
-                             str(new_time),
-                             str(talk_id)])
->>>>>>> This commit includes the followings:
+
         self.db_connection.commit()
         self.cursor.close()
         
