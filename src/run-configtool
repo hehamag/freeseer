@@ -22,26 +22,16 @@
 # For support, questions, suggestions or any other inquiries, visit:
 # http://wiki.github.com/fosslc/freeseer/
 
+import sys
 
+from PyQt4 import QtGui
 
-class Presentation():	
-    '''
-    This class is responsible for encapsulate data about presentations
-    and its database related operations
-    '''
+from freeseer.frontend.default.configtool.freeseer_configtool import *
 
-    def __init__(self, title, speaker=None, description="", level="", event="", time="", room=None, talk_id=None, filename_id=None):
-        
-        '''
-        Initialize a presentation instance
-        '''
-        self.speaker = speaker
-        self.title = title
-        self.description = description
-        self.level = level
-        self.event = event
-        self.time = time
-        self.room = room
-        self.talk_id = talk_id
-        self.filename_id = filename_id
-
+if __name__ == "__main__":
+    app = QtGui.QApplication(sys.argv)
+    main = ConfigTool()
+    #app.installTranslator(main.uiTranslator);
+    #main.translateFile(main.default_language);
+    main.show()
+    sys.exit(app.exec_())
