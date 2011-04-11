@@ -270,13 +270,12 @@
     <property name="title">
      <string>Edit</string>
     </property>
-    <addaction name="actionEdit_talks"/>
     <addaction name="actionPreferences"/>
+    <addaction name="actionEdit_talks"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuOptions"/>
-   <addaction name="menuEdit"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionExit">
@@ -305,7 +304,7 @@
     <string>Edit Talks</string>
    </property>
   </action>
-  <action name="actionPrefercences">
+  <action name="actionPreferences">
    <property name="text">
     <string>Preferences</string>
    </property>
